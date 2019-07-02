@@ -3,33 +3,32 @@
 var express = require('express')
 var todo = require('./todo')
 var todoRoutes = express.Router()
-var app = express()
-var cookieParser = require('cookie-parser');
+// var app = express()
+// var cookieParser = require('cookie-parser');
 
 todoRoutes.route('/all').get(function (req, res, next) {
   todo.find(function (err, todos) {
     if (err) {
       return next(new Error(err))
     }
-    task = JSON.parse(todo)  
-    res.render("index", { task: task});
+    //  .log(todos)
+    res.render("index", { task: todos });
   })
 })
 
 todoRoutes.route('/addtask').post(function (req, res) {
   let sess = req.session;
   sess.listItemId ? sess.listItemId++ : sess.listItemId = 1
-  todo.create(
-    {
-      userId: 1,
-      itemId: sess.listItemId + 1,
-      title: req.body.title,
-      date: req.body.dateTime,
-      done: false
-    },
+  todo.create({
+    userId: 1,
+    itemId: sess.listItemId + 1,
+    title: req.body.title,
+    date: req.body.dateTime,
+    done: false
+  },
     function (error, todo) {
       if (error) {
-        res.status(400).send(`Unable to create todo list ${error}` )
+        res.status(400).send(`Unable to create todo list ${error}`)
       }
       res.status(200).json(todo)
     }

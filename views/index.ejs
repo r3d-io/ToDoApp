@@ -3,28 +3,90 @@
 <head>
   <title> ToDo App </title>
   <link href="https://fonts.googleapis.com/css?family=Lato:100" rel="stylesheet">
-  <link href="../css/styles.css" rel="stylesheet">
+  <link href="/styles.css" rel="stylesheet">
 </head>
 
 <body>
-
   <div class="container">
+      <h1 class="success" style="display: none;">Authentication Success</h1>
+      <h1 class="fail" style="display: none;">Authentication Failed</h1>
+    <button class="get">Get Challenge</button>
+    
+    <button class="verify">Verify Signature</button>
+    
+    <pre class="challenge"></pre>
+    <pre class="signature"></pre>
+    
     <h2> A Simple ToDo List App </h2>
     <form action="/api/addtask" method="POST">
       <input type="text" name="title" placeholder="add new task">
       <input type="date" name="dateTime">
-        <button> Add Task </button>
+      <button> Add Task </button>
       <h2> Added Task </h2>
       <% for( var i = 0; i < task.length; i++){ %>
-      <li><input type="checkbox" name="check" value="<%= task[i] %>" /> <%= task[i] %> </li>
+      <li><input type="checkbox" name="check" value="<%= task[i] %>" />
+        <%= task[i].title %>
+      </li>
       <% } %>
       <button formaction="/api/removetask" type="submit"> Remove </button>
     </form>
-    <h2> Completed task </h2>
-    <% for(var i = 0; i < complete.length; i++){ %>
-    <li><input type="checkbox" checked><%= complete[i] %> </li>
-    <% } %>
   </div>
 </body>
+
+<script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+crossorigin="anonymous">
+</script>
+
+<script type="text/javascript">
+let challenge = null;
+let signature = null;
+if (web3) {
+  console.log("web3");
+} else {
+  alert("No web3 detected. Please install metamask");
+}
+$('.get').on('click', async function () {
+  $('.challenge').empty();
+  var accounts = await web3.eth.getAccounts();
+  console.log("in", accounts
+   )
+  $.get('http://localhost:4000/auth/' + web3.eth.accounts[0], (res) => {
+    challenge = res
+    console.log(res)
+    res.forEach(line => {
+      $('.challenge').append(line.name);
+      $('.challenge').append('<br>');
+      $('.challenge').append(line.value);
+      $('.challenge').append('<br>');
+    })
+    const from = web3.eth.accounts[0];
+    const params = [challenge, from];
+    const method = 'eth_signTypedData';
+    web3.currentProvider.sendAsync({
+      method,
+      params,
+      from
+    }, async (err, result) => {
+      signature = result.result;
+      if (err) {
+        return console.error(err);
+      }
+      if (result.error) {
+        return console.error(result.error);
+      }
+      $('.signature').text(signature);
+    });
+  });
+});
+$('.verify').on('click', function() {
+  $.get('http://localhost:3001/auth/' + challenge[1].value + '/' + signature, (res) => {
+    if (res === web3.eth.accounts[0]) {
+      $('.success').show();
+    } else {
+      $('.fail').show();
+    }
+  });
+});
+</script>
 
 </html>

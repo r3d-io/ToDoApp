@@ -6,6 +6,10 @@ var app = express()
 var mongoose = require('mongoose')
 var bodyParser = require('body-parser')
 var session = require('express-session');
+let ETH_TESTNET = 'https://ropsten.infura.io/v3/6d83b486e19548de928707c8336bf15b'
+const MetaAuth = require('meta-auth');
+const metaAuth = new MetaAuth();
+
 
 var task = ["buy socks", "practise with nodejs"];
 var complete = ["finish jquery"];
@@ -16,6 +20,7 @@ app.set('view engine', 'ejs');
 
 app.use(session({secret: 'blockchain',saveUninitialized: true,resave: true}));
 app.use(express.static(path.join(__dirname, '/public')))
+app.use(express.static('css'))
 app.use(morgan('dev'))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended: true}))
@@ -33,6 +38,21 @@ app.use(function (req, res, next) {
     next()
 })
 
-app.get('/', function (req, res, next) {
-  res.render("index", { task: task, complete: complete });
+app.get('/', async function (req, res, next) {
+  res.render("index", { task: task, complete: complete});
 })
+
+
+app.get('/auth/:MetaAddress', metaAuth, (req, res) => {
+  if (req.metaAuth && req.metaAuth.challenge) {
+    res.send(req.metaAuth.challenge)
+  }
+});
+
+app.get('/auth/:MetaMessage/:MetaSignature', metaAuth, (req, res) => {
+  if (req.metaAuth && req.metaAuth.recovered) {
+    res.send(req.metaAuth.recovered);
+  } else {
+    res.status(400).send();
+  };
+});
