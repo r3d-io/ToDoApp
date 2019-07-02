@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon ./index.js localhost 8080"
+    "start": "nodemon ./server.js localhost 8080"
   },
   "repository": {
     "type": "git",
@@ -19,8 +19,13 @@
   "homepage": "https://github.com/r3d-io/ToDoApp#readme",
   "dependencies": {
     "body-parser": "^1.19.0",
+    "cookie-parser": "^1.4.4",
     "ejs": "^2.6.2",
     "express": "^4.17.1",
+    "express-session": "^1.16.2",
+    "method-override": "^3.0.0",
+    "mongoose": "^5.6.2",
+    "morgan": "^1.9.1",
     "nodemon": "^1.19.1"
   }
 }
