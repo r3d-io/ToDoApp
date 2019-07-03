@@ -1,8 +1,8 @@
 'use strict'
 
 var express = require('express')
-var todo = require('./todo')
-var user = require('./user')
+var todo = require('./db/todo')
+var user = require('./db/user')
 var eth = require('./contractMethod')
 var todoRoutes = express.Router()
 
