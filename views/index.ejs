@@ -8,20 +8,40 @@
 
 <body>
   <div class="container">
+    <h2><a href="http://localhost:4000/">Home</a></h2>
     <h2> A Simple ToDo List App </h2>
     <form action="/api/addtask" method="POST">
       <input type="text" name="title" placeholder="add new task">
-      <input type="date" name="dateTime">
+      <input id="today" type="date" name="dateTime">
       <button> Add Task </button>
       <h2> Added Task </h2>
       <% for( var i = 0; i < task.length; i++){ %>
+      <% if (task[i].status === false) {%>
       <li><input type="checkbox" name="check" value="<%= task[i] %>" />
-        <%= task[i].title %>
+        <b><%= task[i].title %></b><br>
+        <%= task[i].date %>
+        <% } %>
       </li>
       <% } %>
-      <button formaction="/api/removetask" type="submit"> Remove </button>
+      <br>
+      <h2> Completed Task </h2>
+      <% for( var i = 0; i < task.length; i++){ %>
+      <% if (task[i].status === true) {%>
+      <li><input type="checkbox" name="check" value="<%= task[i] %>" />
+        <del><b><%= task[i].title %></b></del>
+        <br>
+        <%= task[i].date %>
+      </li>
+      <% } %>
+      <% } %>
+      <button formaction="/api/removetask" type="submit"> Toggle </button>
     </form>
   </div>
 </body>
+
+<script>
+  let today = new Date().toISOString().substr(0, 10);
+  document.querySelector("#today").value = today;
+</script>
 
 </html>
