@@ -3,6 +3,7 @@
 var express = require('express')
 var todo = require('./todo')
 var user = require('./user')
+var eth = require('./contractMethod')
 var todoRoutes = express.Router()
 
 todoRoutes.route('/all/:address').get(async function (req, res, next) {
@@ -36,12 +37,15 @@ todoRoutes.route('/all/:address').get(async function (req, res, next) {
 
 todoRoutes.route('/addtask').post(async function (req, res) {
   let listCount = await todo.estimatedDocumentCount()
+  console.log(req.session.userId, req.body.title, req.body.dateTime)
+  let task = await eth.createTodoItem(1, req.body.title, req.body.dateTime)
   todo.create({
     userId: req.session.userId,
     itemId: listCount + 1,
     title: req.body.title,
     date: req.body.dateTime,
-    status: false
+    status: false,
+    transactionHash: task.transactionHash
   },
     function (error, todo) {
       if (error) {
@@ -69,7 +73,7 @@ todoRoutes.route('/updatetask/:id').post(function (req, res, next) {
     if (error) {
       return next(new Error('Todo was not found'))
     } else {
-      todo.status = !todo.status
+      todo.status = !todo.status 
 
       todo.save({
         function(error, todo) {

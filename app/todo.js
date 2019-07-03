@@ -10,6 +10,9 @@ var todo = new mongoose.Schema({
   title: {
     type: String
   },
+  transactionHash: {
+    type: String
+  },
   date:{
     type: Date
   },

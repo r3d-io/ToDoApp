@@ -10,10 +10,6 @@ let ETH_TESTNET = 'https://ropsten.infura.io/v3/6d83b486e19548de928707c8336bf15b
 const MetaAuth = require('meta-auth');
 const metaAuth = new MetaAuth();
 
-
-var task = ["buy socks", "practise with nodejs"];
-var complete = ["finish jquery"];
-
 var config = require('./app/config')
 mongoose.connect(config.DB)
 app.set('view engine', 'ejs');

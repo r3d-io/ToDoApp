@@ -18,8 +18,11 @@
       <% for( var i = 0; i < task.length; i++){ %>
       <% if (task[i].status === false) {%>
       <li><input type="checkbox" name="check" value="<%= task[i] %>" />
-        <b><%= task[i].title %></b><br>
-        <%= task[i].date %>
+        <b><%= task[i].title %></b>
+        <br>
+          <%= task[i].date %>
+        <br>
+          <%= task[i].transactionHash %>
         <% } %>
       </li>
       <% } %>
@@ -30,7 +33,9 @@
       <li><input type="checkbox" name="check" value="<%= task[i] %>" />
         <del><b><%= task[i].title %></b></del>
         <br>
-        <%= task[i].date %>
+          <%= task[i].date %>
+        <br>
+          <%= task[i].transactionHash %>
       </li>
       <% } %>
       <% } %>
