@@ -39,7 +39,7 @@ app.use(function (req, res, next) {
 })
 
 app.get('/', async function (req, res, next) {
-  res.render("index", { task: task, complete: complete});
+  res.render("authentication");
 })
 
 

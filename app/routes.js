@@ -35,7 +35,7 @@ todoRoutes.route('/addtask').post(function (req, res) {
   )
 })
 
-todoRoutes.route('/removetask/:id').get(function (req, res, next) {
+todoRoutes.route('/removetask/:id').get(function (req, res, next){
   var id = req.params.id
   todo.findByIdAndRemove(id, function (err, todo) {
     if (err) {
