@@ -8,7 +8,7 @@ var todoRoutes = express.Router()
 
 todoRoutes.route('/all/:address').get(async function (req, res, next) {
   let uId = await utils.getUserId(req.params.address)
-  console.log('routes in ',uId)
+  console.log('routes in ', uId)
   todo.find({ userId: uId }, function (err, todos) {
     if (err) {
       return next(new Error(err))
@@ -49,25 +49,29 @@ todoRoutes.route('/removetask/:id').get(function (req, res, next) {
   })
 })
 
-todoRoutes.route('/updatetask/:id').post(function (req, res, next) {
-  var id = req.params.id
-  todo.findById(id, function (error, todo) {
-    if (error) {
-      return next(new Error('Todo was not found'))
-    } else {
-      todo.status = !todo.status
+todoRoutes.route('/updatetask').post(function (req, res, next) {
+  console.log(req.body)
+  var ids = req.body.check
+  ids.forEach(id => {
 
-      todo.save({
-        function(error, todo) {
-          if (error) {
-            res.status(400).send('Unable to update todo')
-          } else {
-            res.status(200).json(todo)
+    todo.findById(id, function (error, todo) {
+      if (error) {
+        return next(new Error('Todo was not found'))
+      } else {
+        todo.status = !todo.status
+
+        todo.save({
+          function(error, todo) {
+            if (error) {
+              res.status(400).send('Unable to update todo')
+            } else {
+              res.status(200).json(todo)
+            }
           }
-        }
-      })
-    }
-  })
+        })
+      }
+    })
+  });
 })
 
 module.exports = todoRoutes;

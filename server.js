@@ -11,7 +11,7 @@ var app = express()
 var metaAuth = new MetaAuth();
 
 var config = require('./app/config')
-mongoose.connect(config.DB)
+mongoose.connect(config.DB, { useNewUrlParser: true })
 app.set('view engine', 'ejs');
 
 app.use(session({ secret: 'blockchain', saveUninitialized: true, resave: true }));

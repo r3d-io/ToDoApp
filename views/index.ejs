@@ -15,31 +15,32 @@
       <input id="today" type="date" name="dateTime">
       <button> Add Task </button>
       <h2> Added Task </h2>
-      <% for( var i = 0; i < task.length; i++){ %>
-      <% if (task[i].status === false) {%>
-      <li><input type="checkbox" name="check" value="<%= task[i] %>" />
-        <b><%= task[i].title %></b>
-        <br>
-          <%= task[i].date %>
-        <br>
-          <%= task[i].transactionHash %>
+      <table>
+        <% for( var i = 0; i < task.length; i++){ %>
+        <% if (task[i].status === false) {%>
+        <tr>
+          <td><input type="checkbox" name="check" value="<%= task[i]._id %>" /></td>
+          <td><b><%= task[i].title %></b></td>
+          <td><%= (task[i].date.toLocaleDateString("en-US")) %></td>
+          <td><%= task[i].transactionHash %></td>
+        </tr>
+          <% } %>
         <% } %>
-      </li>
-      <% } %>
+      </table>
       <br>
       <h2> Completed Task </h2>
       <% for( var i = 0; i < task.length; i++){ %>
       <% if (task[i].status === true) {%>
-      <li><input type="checkbox" name="check" value="<%= task[i] %>" />
+      <li><input type="checkbox" name="check" value="<%= task[i]._id %>" />
         <del><b><%= task[i].title %></b></del>
         <br>
-          <%= task[i].date %>
+        <%= (task[i].date).toLocaleDateString("en-US") %>
         <br>
-          <%= task[i].transactionHash %>
+        <%= task[i].transactionHash %>
       </li>
       <% } %>
       <% } %>
-      <button formaction="/api/removetask" type="submit"> Toggle </button>
+      <button formaction="/api/updatetask" type="submit"> Toggle </button>
     </form>
   </div>
 </body>
