@@ -87,7 +87,8 @@
   $('.verify').on('click', function () {
     if (challenge == null)
       $('.fail').show();
-    $.get('http://localhost:4000/auth/' + challenge[1].value + '/' + signature, (res) => {
+    $.get('http://localhost:4000/auth/' + challenge[1].value + '/' + signature  ,
+     (res) => {
       if (res === web3.eth.accounts[0]) {
         $('.success').show();
         window.location.replace("http://localhost:4000/api/all/"+ web3.eth.accounts[0]);
