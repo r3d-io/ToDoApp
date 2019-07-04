@@ -13,6 +13,9 @@ var todo = new mongoose.Schema({
   transactionHash: {
     type: String
   },
+  transactionCount: {
+    type: Number
+  },
   date:{
     type: Date
   },
