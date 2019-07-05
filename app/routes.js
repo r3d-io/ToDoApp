@@ -69,26 +69,32 @@ todoRoutes.route('/removetask/:id').get(function (req, res, next) {
 todoRoutes.route('/updatetask').post(function (req, res, next) {
   console.log(req.body)
   var ids = req.body.check
-  ids.forEach(id => {
-
-    todo.findById(id, function (error, todo) {
-      if (error) {
-        return next(new Error('Todo was not found'))
-      } else {
-        todo.status = !todo.status
-        eth.updateStatus(todo.transactionCount)
-        todo.save({
-          function(error, todo) {
-            if (error) {
-              res.status(400).send('Unable to update todo')
-            } else {
-              res.status(200).json(todo)
-            }
-          }
-        })
-      }
-    })
-  });
+  if (Array.isArray(ids))
+    ids.forEach(id => {
+      updatetask(id)
+    });
+  else
+    updatetask(ids)
+  res.redirect(process.env.BASEPATH + "api/all/" + req.session.address, 200)
 })
 
+function updatetask(id) {
+  todo.findById(id, function (error, todo) {
+    if (error) {
+      return next(new Error('Todo was not found'))
+    } else {
+      todo.status = !todo.status
+      eth.updateStatus(todo.transactionCount)
+      todo.save({
+        function(error, todo) {
+          if (error) {
+            res.status(400).send('Unable to update todo')
+          } else {
+            continue
+          }
+        }
+      })
+    }
+  })
+}
 module.exports = todoRoutes;

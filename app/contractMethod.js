@@ -24,6 +24,7 @@ async function getTask(taskId){
 }
 
 async function updateStatus(id){
+  account = await web3.eth.getAccounts()
   let taskStatus = await deployedContract.methods.toggleCompleted(id).send({ from: account[1], gas:3000000 })
   return taskStatus
 }

@@ -4,19 +4,26 @@
   <title> ToDo App </title>
   <link href="https://fonts.googleapis.com/css?family=Lato:100" rel="stylesheet">
   <link href="/styles.css" rel="stylesheet">
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet"
+    type="text/css">
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
 </head>
 
 <body>
   <div class="container">
-    <h2><a href="http://localhost:4000/">Home</a></h2>
-    <h2><a href="http://localhost:4000/api/eth/all/<%= address %>">All eth</a></h2>    
+    <div class="row">
+      <h2 class="col-md-5"><a href="http://localhost:4000/">Home</a></h2>
+      <h2 class="col-md-5"><a href="http://localhost:4000/api/eth/all/<%= address %>">All eth</a></h2>
+    </div>
     <h2> A Simple ToDo List App </h2>
     <form action="/api/addtask" method="POST">
       <input type="text" name="title" placeholder="add new task">
       <input id="today" type="date" name="dateTime">
       <button> Add Task </button>
+      <br>
+      <br>
       <h2> Added Task </h2>
-      <table>
+      <table class="table">
         <% for( var i = 0; i < task.length; i++){ %>
         <% if (task[i].status === false) {%>
         <tr>
@@ -25,22 +32,23 @@
           <td><%= (task[i].date.toLocaleDateString("en-US")) %></td>
           <td><%= task[i].transactionHash %></td>
         </tr>
-          <% } %>
+        <% } %>
         <% } %>
       </table>
       <br>
       <h2> Completed Task </h2>
-      <% for( var i = 0; i < task.length; i++){ %>
-      <% if (task[i].status === true) {%>
-      <li><input type="checkbox" name="check" value="<%= task[i]._id %>" />
-        <del><b><%= task[i].title %></b></del>
-        <br>
-        <%= (task[i].date).toLocaleDateString("en-US") %>
-        <br>
-        <%= task[i].transactionHash %>
-      </li>
-      <% } %>
-      <% } %>
+      <table class="table">
+        <% for( var i = 0; i < task.length; i++){ %>
+        <% if (task[i].status === true) {%>
+        <tr>
+          <td><input type="checkbox" name="check" value="<%= task[i]._id %>" /></td>
+          <td><del><b><%= task[i].title %></b></del></td>
+          <td><%= (task[i].date.toLocaleDateString("en-US")) %></td>
+          <td><%= task[i].transactionHash %></td>
+        </tr>
+        <% } %>
+        <% } %>
+      </table>
       <button formaction="/api/updatetask" type="submit"> Toggle </button>
     </form>
   </div>
