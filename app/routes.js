@@ -13,17 +13,21 @@ todoRoutes.route('/all/:address').get(async function (req, res, next) {
     if (err) {
       return next(new Error(err))
     }
-    res.render("index", { task: todos, address: req.params.address});
+    res.render("index", { task: todos, address: req.params.address });
   })
 })
 
 todoRoutes.route('/eth/all/:address').get(async function (req, res, next) {
   let uId = await utils.getUserId(req.params.address)
-  todo.find({ userId: uId }, function (err, todos) {
-    todos.forEach(item => {
-      eth.getTask(item.transactionCount)
-    });
-    res.status(200).json(todos)
+  todo.find({ userId: uId }, async function (err, todos) {
+    let ethtodos = await Promise.all(todos.map(async item => {
+      console.log("1111111", item)
+      item = await eth.getTask(item.transactionCount)
+      return item
+      console.log("3333333", item)
+    }));
+    console.log("early", ethtodos)
+    res.status(200).json(ethtodos)
   })
 })
 
@@ -51,7 +55,7 @@ todoRoutes.route('/addtask').post(async function (req, res) {
         res.redirect(process.env.BASEPATH + "api/all/" + req.session.address, 200)
       }
     )
-  else  
+  else
     res.status(400).send(`Unable to create todo list`)
 })
 

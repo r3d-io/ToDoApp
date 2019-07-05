@@ -1,8 +1,8 @@
 
 let Web3 = require('web3')
 let fs = require('fs');
-let web3 = new Web3(process.env.HOST)
 require('dotenv').config()
+let web3 = new Web3(process.env.HOST)
 abi = JSON.parse(fs.readFileSync(process.env.ABI).toString())
 bytecode = fs.readFileSync(process.env.BIN).toString()
 deployedContract = new web3.eth.Contract(abi)
@@ -20,6 +20,7 @@ async function getTask(taskId){
   let taskCount = await deployedContract.methods.taskCount().call()
   taskId = taskId || taskCount 
   let task = await deployedContract.methods.tasks(taskId).call()
+  console.log("2222222222222222",task)
   return task  
 }
 

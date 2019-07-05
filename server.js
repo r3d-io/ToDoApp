@@ -1,8 +1,8 @@
 
 var express = require('express')
 var morgan = require('morgan')
-var path = require('path')
 var mongoose = require('mongoose')
+var path = require('path')
 var bodyParser = require('body-parser')
 var session = require('express-session');
 var MetaAuth = require('meta-auth');
@@ -14,7 +14,7 @@ var config = require('./app/config')
 mongoose.connect(config.DB, { useNewUrlParser: true })
 app.set('view engine', 'ejs');
 
-app.use(session({ secret: 'blockchain', saveUninitialized: true, resave: true }));
+app.use(session({ secret: 'blockchain', saveUninitialized: false, resave: true }));
 app.use(express.static(path.join(__dirname, '/public')))
 app.use(express.static('css'))
 app.use(morgan('dev'))
