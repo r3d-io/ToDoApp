@@ -1,12 +1,13 @@
 
-var Web3 = require('web3')
-const fs = require('fs');
-let web3 = new Web3("http://localhost:8545")
-abi = JSON.parse(fs.readFileSync('contract/todo.abi').toString())
-bytecode = fs.readFileSync('contract/todo.bin').toString()
+let Web3 = require('web3')
+let fs = require('fs');
+let web3 = new Web3(process.env.HOST)
+require('dotenv').config()
+abi = JSON.parse(fs.readFileSync(process.env.ABI).toString())
+bytecode = fs.readFileSync(process.env.BIN).toString()
 deployedContract = new web3.eth.Contract(abi)
 
-deployedContract.options.address = "0x3fc9350370823b8d59791172e3e791bcf18ed740"
+deployedContract.options.address = process.env.ADDRESS
 
 async function createTodoItem(id, title) {
   account = await web3.eth.getAccounts();

@@ -5,6 +5,7 @@ var todo = require('./db/todo')
 var eth = require('./contractMethod')
 var utils = require('./utils')
 var todoRoutes = express.Router()
+require('dotenv').config()
 
 todoRoutes.route('/all/:address').get(async function (req, res, next) {
   let uId = await utils.getUserId(req.params.address)
@@ -47,7 +48,7 @@ todoRoutes.route('/addtask').post(async function (req, res) {
           res.status(400).send(`Unable to create todo list ${error}`)
         }
         // res.status(200).json(todo)
-        res.redirect("http://localhost:4000/api/all/" + req.session.address, 200)
+        res.redirect(process.env.BASEPATH + "api/all/" + req.session.address, 200)
       }
     )
   else  
