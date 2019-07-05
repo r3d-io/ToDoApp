@@ -21,12 +21,9 @@ todoRoutes.route('/eth/all/:address').get(async function (req, res, next) {
   let uId = await utils.getUserId(req.params.address)
   todo.find({ userId: uId }, async function (err, todos) {
     let ethtodos = await Promise.all(todos.map(async item => {
-      console.log("1111111", item)
       item = await eth.getTask(item.transactionCount)
       return item
-      console.log("3333333", item)
     }));
-    console.log("early", ethtodos)
     res.status(200).json(ethtodos)
   })
 })

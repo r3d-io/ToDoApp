@@ -20,7 +20,6 @@ async function getTask(taskId){
   let taskCount = await deployedContract.methods.taskCount().call()
   taskId = taskId || taskCount 
   let task = await deployedContract.methods.tasks(taskId).call()
-  console.log("2222222222222222",task)
   return task  
 }
 
